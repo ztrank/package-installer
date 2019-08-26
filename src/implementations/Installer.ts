@@ -66,7 +66,7 @@ export class InstallerImpl {
     }
 
     public askForPackageSelection(): Observable<string> {
-        let packages = Object.getOwnPropertyNames(this.repoMetadata);
+        const packages = Object.getOwnPropertyNames(this.repoMetadata);
         packages.sort();
         return from(inquirer.prompt([{
             type: 'list',
@@ -79,10 +79,10 @@ export class InstallerImpl {
     }
 
     public askForVersionSelection(packageName: string): Observable<PackageMetadata> {
-        let versions = Object.getOwnPropertyNames(this.repoMetadata[packageName]);
+        const versions = Object.getOwnPropertyNames(this.repoMetadata[packageName]);
         versions.sort((a, b) => {
-            const as = a.split(/\./).map(r => parseInt(r));
-            const bs = b.split(/\./).map(r => parseInt(r));
+            const as = a.split(/\./).map(r => parseInt(r, 10));
+            const bs = b.split(/\./).map(r => parseInt(r, 10));
             if(as[0] - bs[0] === 0) {
                 if(as[1] - bs[1] === 0) {   
                     return bs[2] - as[2];
