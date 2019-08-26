@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import { Observable } from 'rxjs';
 import { Container } from 'inversify';
 import { Symbols } from './symbols';
