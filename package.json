@@ -47,5 +47,5 @@
   "bugs": {
     "url": "https://github.com/ztrank/package-installer/issues"
   },
-  "name": "package-installer"
+  "name": "@trankzachary/package-installer"
 }
