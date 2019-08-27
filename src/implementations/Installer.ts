@@ -83,7 +83,6 @@ export class InstallerImpl {
     }
 
     public askForVersionSelection(packageName: string): Observable<PackageMetadata> {
-        console.log('askForVersionSelection');
         const versions = Object.getOwnPropertyNames(this.repoMetadata[packageName]);
         versions.sort((a, b) => {
             const as = a.split(/\./).map(r => parseInt(r, 10));
@@ -111,7 +110,6 @@ export class InstallerImpl {
     }
 
     public downloadPackage(metadata: PackageMetadata): Observable<PackageMetadata> {
-        console.log('downloadPackage');
         return this.ensureDownloadDirectory(metadata)
             .pipe(
                 mergeMap(() => this.downloader.download(this.settings.bucket, this.cleanRemote(metadata.name, metadata.version, 'package-files.json'), Path.join(this.temp, metadata.name, metadata.version, 'package-files.json'))),
@@ -135,7 +133,6 @@ export class InstallerImpl {
     }
 
     public ensureDownloadDirectory(metadata: PackageMetadata): Observable<PackageMetadata> {
-        console.log('ensureDownloadDirectory');
         return this.fileSystem.remove(this.temp, metadata.name, metadata.version)
             .pipe(
                 catchError(() => of(undefined)),
@@ -146,7 +143,6 @@ export class InstallerImpl {
     }
 
     public ensureDestination(metadata: PackageMetadata): Observable<PackageMetadata> {
-        console.log('ensureDestination');
         return this.fileSystem.remove(this.fileSystem.workingDirectory, 'src', 'service-references', metadata.name)
             .pipe(
                 catchError(() => of(undefined)),
@@ -156,13 +152,11 @@ export class InstallerImpl {
     }
 
     public copyFiles(metadata: PackageMetadata): Observable<PackageMetadata> {
-        console.log('copyFiles');
         return this.fileSystem.copy(Path.join(this.temp, metadata.name, metadata.version), Path.join(this.fileSystem.workingDirectory, 'src', 'service-references', metadata.name))
             .pipe(map(() => metadata));
     }
 
     public updateIndex(metadata: PackageMetadata): Observable<PackageMetadata> {
-        console.log('updateIndex');
         return this.fileSystem.readFile(this.fileSystem.workingDirectory, 'src', 'service-references', 'index.ts')
             .pipe(
                 map(file => {
@@ -179,7 +173,6 @@ export class InstallerImpl {
     }
 
     public updateProjectMetadata(metadata: PackageMetadata): Observable<void> {
-        console.log('updateProjectMetadata');
         this.projectMetadata.packages = this.projectMetadata.packages || {};
         this.projectMetadata.packages[metadata.name] = metadata;
         return this.fileSystem.writeFile(JSON.stringify(this.projectMetadata), this.fileSystem.workingDirectory, 'src', 'service-references', 'project-metadata.json');
