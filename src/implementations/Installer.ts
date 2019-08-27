@@ -119,9 +119,11 @@ export class InstallerImpl {
                 mergeMap((file: PackageFiles) => from(file.files)),
                 concatMap(file => {
                     const localPath = file.replace(this.cleanRemote(Path.join(metadata.name, metadata.version)), '').split('/');
+                    const fileName = <string>localPath.pop();
+                    
                     return this.fileSystem.ensureDirectory(this.temp, metadata.name, metadata.version, ...localPath)
                         .pipe(
-                            mergeMap(() => this.downloader.download(this.settings.bucket, file, Path.join(this.temp, metadata.name, metadata.version, ...localPath)))
+                            mergeMap(() => this.downloader.download(this.settings.bucket, file, Path.join(this.temp, metadata.name, metadata.version, ...localPath, fileName)))
                         )
                 }),
                 reduce((acc: any[], value: any) => {
