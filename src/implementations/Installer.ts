@@ -12,6 +12,13 @@ import { RepositoryMetadata } from '../interfaces/Repository.Metadata';
 import { ProjectMetadata } from '../interfaces/Project.Metadata';
 import inquirer from 'inquirer';
 
+function upperCaseFirst(str: string): string {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+function properCase(str: string): string {
+    return str.split(/[-_\s\.]/).map(s => upperCaseFirst(s)).join('');
+}
 
 @injectable()
 export class InstallerImpl {
@@ -166,12 +173,16 @@ export class InstallerImpl {
         return this.fileSystem.readFile(this.fileSystem.workingDirectory, 'src', 'service-references', 'index.ts')
             .pipe(
                 map(file => {
-                    if(file.includes(`export * from './${metadata.name}';`)) {
-                        return file;
-                    } else {
-                        file += `\nexport * from './${metadata.name}';`;
-                        return file;
+                    const importName = properCase(metadata.importName ? metadata.importName : metadata.name);
+                    const importString = `import * as ${importName} from './${metadata.name}';`;
+                    const exportString = `export { ${importName} }`;
+                    if(!file.includes(importString)) {
+                        file = [importString, file].join('\n');
                     }
+                    if(!file.includes(exportString)) {
+                        file = [file, exportString].join('\n');
+                    }
+                    return file;
                 }),
                 mergeMap(file => this.fileSystem.writeFile(file, this.fileSystem.workingDirectory, 'src', 'service-references', 'index.ts')),
                 map(() => metadata)

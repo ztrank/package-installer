@@ -72,6 +72,7 @@ const repoMetadata = {
         "1.0.2": {
             name: 'azimuth-secrets',
             version: '1.0.2',
+            importName: 'secrets',
             author: 'ztrank',
             repository: 'git',
             directory: 'src/public'
@@ -420,7 +421,44 @@ test('updateIndex', (done) => {
         expect(b).toBe('src');
         expect(c).toBe('service-references');
         expect(d).toBe('index.ts');
-        expect(file).toBe(`export * from 'some-other-thing';\nexport * from './azimuth-secrets';`);
+        expect(file).toBe(`import * as AzimuthSecrets from './azimuth-secrets';\nexport * from 'some-other-thing';\nexport { AzimuthSecrets }`);
+        return of(undefined);
+    });
+    installer.updateIndex(metadata)
+        .subscribe(meta => {
+            expect(meta).toBeDefined();
+            expect(fileSystem.readFile).toHaveBeenCalled();
+            expect(fileSystem.writeFile).toHaveBeenCalled();
+            done();
+        });
+});
+
+test('updateIndex2', (done) => {
+    const projectMetadata: ProjectMetadata = <any>{
+    
+    };
+    const metadata = repoMetadata['azimuth-secrets']['1.0.2'];
+    
+    const downloader = new Downloader();
+    const fileSystem = new FileSystem();
+    const installer = new InstallerImpl(settings, downloader, fileSystem);
+    installer.repoMetadata = repoMetadata;
+    installer.projectMetadata = projectMetadata;
+    //this.fileSystem.readFile(this.fileSystem.workingDirectory, 'src', 'service-references', 'index.ts')
+    //his.fileSystem.writeFile(file, this.fileSystem.workingDirectory, 'src', 'service-references', 'index.ts')
+    fileSystem.readFile.mockImplementation((a, b, c, d) => {
+        expect(a).toBe(fileSystem.workingDirectory);
+        expect(b).toBe('src');
+        expect(c).toBe('service-references');
+        expect(d).toBe('index.ts');
+        return of(`export * from 'some-other-thing';`);
+    });
+    fileSystem.writeFile.mockImplementation((file, a, b, c, d) => {
+        expect(a).toBe(fileSystem.workingDirectory);
+        expect(b).toBe('src');
+        expect(c).toBe('service-references');
+        expect(d).toBe('index.ts');
+        expect(file).toBe(`import * as Secrets from './azimuth-secrets';\nexport * from 'some-other-thing';\nexport { Secrets }`);
         return of(undefined);
     });
     installer.updateIndex(metadata)
