@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 var argv = require('argv');
 var fs = require('fs');
-var Run = require('../dist/index.js');
+var Dist = require('../dist/index.js');
 
 
 argv.version('0.2.5-pre');
@@ -30,7 +30,7 @@ var args = argv.option([
     }
 ]).run();
 
-Run(
+Dist.Run(
     args.account,
     args.bucket,
     args.temp
