@@ -1,6 +1,7 @@
 {
   "files": [
-    "dist/**/*"
+    "dist/**/*",
+    "bin/**/*"
   ],
   "bin": {
     "azip": "./bin/index.js"
