@@ -30,7 +30,7 @@ export class InstallerImpl {
     }
 
     public get temp(): string {
-        return Path.join(__dirname, 'temp');
+        return this.settings.temp;
     }
 
     public downloadMetadata(): Observable<void> {
