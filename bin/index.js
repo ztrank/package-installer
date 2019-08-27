@@ -1,8 +1,8 @@
 #!/usr/bin/env node
-import argv from 'argv';
-import fs from 'fs';
-import Run from './dist/index.js';
-const pkg = JSON.parse(fs.readFileSync('../package.json'));
+var argv = require('argv');
+var fs = require('fs');
+var Run = require('./dist/index.js');
+var pkg = JSON.parse(fs.readFileSync('../package.json'));
 
 
 argv.version(pkg.version);
