@@ -34,7 +34,11 @@ export class InstallerImpl {
     }
 
     public downloadMetadata(): Observable<void> {
-        return this.downloader.download(this.settings.bucket, this.cleanRemote('repository-metadata.json'), Path.join(this.temp, 'repository-metadata.json'));
+        return this.fileSystem.ensureDirectory(this.temp)
+            .pipe(
+                mergeMap(() => this.downloader.download(this.settings.bucket, this.cleanRemote('repository-metadata.json'), Path.join(this.temp, 'repository-metadata.json')))
+            );
+            
     }
 
     public loadMetadata(): Observable<void> {

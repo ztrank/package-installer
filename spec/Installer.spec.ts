@@ -28,7 +28,8 @@ class FileSystem {
 }
 
 const settings = {
-    bucket: 'azimuth-packages'
+    bucket: 'azimuth-packages',
+    temp: 'C:\\Temp\\azimuth-packages'
 };
 
 
@@ -99,6 +100,9 @@ test('downloadMetadata', (done) => {
     const downloader = new Downloader();
     const fileSystem = new FileSystem();
     const installer = new InstallerImpl(settings, downloader, fileSystem);
+    fileSystem.ensureDirectory.mockImplementation(() => {
+        return of(undefined);
+    });
 
     downloader.download.mockImplementation((bucket, remote, local) => {
         expect(bucket).toBe(settings.bucket);
