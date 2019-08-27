@@ -25,7 +25,7 @@ export class FileSystemImpl implements FileSystem {
     }
 
     remove(...path: string[]): Observable<void> {
-        return from(fs.remove(Path.join(...path)));
+        return from(fs.remove(Path.join(...path)).catch(() => {}));
     }
 
     copy(frm: string, to: string): Observable<void> {
