@@ -1,8 +1,7 @@
 {
   "files": [
     "dist/**/*",
-    "bin/**/*",
-    "package.json"
+    "bin/**/*"
   ],
   "bin": {
     "azip": "./bin/index.js"

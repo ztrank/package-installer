@@ -2,10 +2,9 @@
 var argv = require('argv');
 var fs = require('fs');
 var Run = require('../dist/index.js');
-var pkg = JSON.parse(fs.readFileSync('../package.json'));
 
 
-argv.version(pkg.version);
+argv.version('0.2.5-pre');
 
 var args = argv.option([
     {
