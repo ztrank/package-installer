@@ -1,6 +1,6 @@
-import { Observable, from } from 'rxjs';
+import { Observable, from, of } from 'rxjs';
 import { injectable, inject } from 'inversify';
-import { mergeMap, map, concatMap, reduce } from 'rxjs/operators';
+import { mergeMap, map, concatMap, reduce, catchError } from 'rxjs/operators';
 import { Symbols } from '../symbols';
 import { Downloader } from '../interfaces/Downloader';
 import { Settings } from '../interfaces/Settings';
@@ -135,6 +135,7 @@ export class InstallerImpl {
     public ensureDownloadDirectory(metadata: PackageMetadata): Observable<PackageMetadata> {
         return this.fileSystem.remove(this.temp, metadata.name, metadata.version)
             .pipe(
+                catchError(() => of(undefined)),
                 mergeMap(() => this.fileSystem.ensureDirectory(this.temp, metadata.name, metadata.version)),
                 map(() => metadata)
             );
@@ -144,6 +145,7 @@ export class InstallerImpl {
     public ensureDestination(metadata: PackageMetadata): Observable<PackageMetadata> {
         return this.fileSystem.remove(this.fileSystem.workingDirectory, 'src', 'service-references', metadata.name)
             .pipe(
+                catchError(() => of(undefined)),
                 mergeMap(() => this.fileSystem.ensureDirectory(this.fileSystem.workingDirectory, 'src', 'service-references', metadata.name)),
                 map(() => metadata)
             );
