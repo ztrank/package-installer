@@ -14,7 +14,8 @@ const installer = {
     ensureDestination: jest.fn().mockImplementation(() => of({})),
     copyFiles: jest.fn().mockImplementation(() => of({})),
     updateIndex: jest.fn().mockImplementation(() => of({})),
-    updateProjectMetadata: jest.fn().mockImplementation(() => of(undefined))
+    updateProjectMetadata: jest.fn().mockImplementation(() => of(undefined)),
+    downloadPackage: jest.fn().mockImplementation(() => of({}))
 };
 
 test('Run', (done) => {
