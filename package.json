@@ -2,6 +2,9 @@
   "files": [
     "dist/**/*"
   ],
+  "bin":{
+      "azip": "./bin/index.js"
+  },
   "description": "",
   "repository": {
     "type": "git",
@@ -37,6 +40,7 @@
   },
   "dependencies": {
     "@google-cloud/storage": "^3.2.0",
+    "argv": "0.0.2",
     "fs-extra": "^8.1.0",
     "inquirer": "^7.0.0",
     "inversify": "^5.0.1",

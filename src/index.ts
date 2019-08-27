@@ -24,6 +24,3 @@ export function Run(
     const runner = container.get<InstallerRunner>(Symbols.Runner);
     return runner.run();
 }
-
-Run()
-    .subscribe(() => {});
