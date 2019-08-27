@@ -12,7 +12,7 @@ import { InstallerRunner } from './interfaces/Installer.Runner';
 export function Run(
     storageClientCertLocation: string = 'C:\\service-accounts\\azimuth-package-manager.json',
     bucket: string = 'azimuth-packages',
-    temp: string = 'C:\\temp'
+    temp: string = 'C:\\temp\\azimuth-packages'
 ): Observable<void> {
     const container = new Container();
     container.bind(Symbols.StorageClient).toConstantValue(new Storage({keyFilename: storageClientCertLocation}));
