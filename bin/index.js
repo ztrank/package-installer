@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 var argv = require('argv');
 var fs = require('fs');
-var Run = require('./dist/index.js');
+var Run = require('../dist/index.js');
 var pkg = JSON.parse(fs.readFileSync('../package.json'));
 
 
