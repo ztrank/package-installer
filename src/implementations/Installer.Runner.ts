@@ -22,6 +22,7 @@ export class InstallerRunnerImpl {
                 mergeMap(() => this.installer.askForPackageSelection()),
                 mergeMap(name => this.installer.askForVersionSelection(name)),
                 mergeMap(meta => this.installer.ensureDestination(meta)),
+                mergeMap(meta => this.installer.downloadPackage(meta)),
                 mergeMap(meta => this.installer.copyFiles(meta)),
                 mergeMap(meta => this.installer.updateIndex(meta)),
                 mergeMap(meta => this.installer.updateProjectMetadata(meta))
