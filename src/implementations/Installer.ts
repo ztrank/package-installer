@@ -155,7 +155,11 @@ export class InstallerImpl {
 
     public copyFiles(metadata: PackageMetadata): Observable<PackageMetadata> {
         return this.fileSystem.copy(Path.join(this.temp, metadata.name, metadata.version), Path.join(this.fileSystem.workingDirectory, 'src', 'service-references', metadata.name))
-            .pipe(map(() => metadata));
+            .pipe(
+                mergeMap(() => this.fileSystem.remove(Path.join(this.fileSystem.workingDirectory, 'src', 'service-references', metadata.name, 'package-files.json'))),
+                mergeMap(() => this.fileSystem.remove(Path.join(this.fileSystem.workingDirectory, 'src', 'service-references', metadata.name, 'package-metadata.json'))),
+                map(() => metadata)
+            );
     }
 
     public updateIndex(metadata: PackageMetadata): Observable<PackageMetadata> {

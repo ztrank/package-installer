@@ -383,11 +383,15 @@ test('copyFiles', (done) => {
         expect(to).toBe(Path.join(fileSystem.workingDirectory, 'src', 'service-references', metadata.name));
         return of(undefined);
     });
+    fileSystem.remove.mockImplementation(() => {
+        return of(undefined);
+    });
 
     installer.copyFiles(metadata)
         .subscribe((meta) => {
             expect(meta).toBeDefined();
             expect(fileSystem.copy).toHaveBeenCalled();
+            expect(fileSystem.remove).toHaveBeenCalled();
             done();
         })
 });
